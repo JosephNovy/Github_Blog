@@ -4,6 +4,8 @@ import {
   Buildings,
   GithubLogo,
 } from "phosphor-react";
+import { useContext } from "react";
+import { UserGithubContext } from "../../../../contexts/userContext";
 import {
   Contanier,
   UserContanier,
@@ -16,36 +18,35 @@ import {
 } from "./styles";
 
 export const GitUser = () => {
+  const { userGithub } = useContext(UserGithubContext);
+  const { login, avatar_url, name, bio, followers, company, html_url } =
+    userGithub;
   return (
     <Contanier>
       <UserContanier>
         <UserPhoto>
-          <img src="https://avatars.githubusercontent.com/u/105006945?s=400&u=2d295d9f4947c6f0ad1ec3587e258580cf0195d1&v=4" />
+          <img src={avatar_url} />
         </UserPhoto>
         <UserInfo>
           <UserHeader>
-            <h2>User Name</h2>
-            <a href="">
+            <h2>{name}</h2>
+            <a href={html_url} target="blank">
               GITHUB <ArrowSquareOut size={20} />
             </a>
           </UserHeader>
-          <UserDesc>
-            Tristique volutpat pulvinar vel massa, pellentesque egestas. Eu
-            viverra massa quam dignissim aenean malesuada suscipit. Nunc,
-            volutpat pulvinar vel mass.
-          </UserDesc>
+          <UserDesc>{bio}</UserDesc>
           <UserIcons>
             <Icon>
               <GithubLogo size={22} color="#7C7C8A" />
-              <p>cameronwll</p>
+              <p>{login}</p>
             </Icon>
             <Icon>
               <Buildings size={22} color="#7C7C8A" />
-              <p>Rocketseat</p>
+              <p>{company ? company : "---"}</p>
             </Icon>
             <Icon>
               <UsersThree size={22} color="#7C7C8A" />
-              <p>32 seguidores</p>
+              <p>{followers} seguidores</p>
             </Icon>
           </UserIcons>
         </UserInfo>

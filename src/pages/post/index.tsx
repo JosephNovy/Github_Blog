@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { dateFormatter } from "../../utils/formatter";
 import {
   CaretLeft,
   ArrowSquareOut,
@@ -19,8 +21,40 @@ import {
   IssueText,
   IssueCode,
 } from "./styles";
+import { api } from "../../lib/Axios";
+
+interface IssueProps {
+  html_url: string;
+  title: string;
+  created_at: Date;
+  comments: number;
+  body: string;
+  user: string;
+}
+const initialState = {
+  html_url: "",
+  title: "",
+  created_at: new Date(),
+  comments: 0,
+  body: "",
+  user: "",
+};
 
 export const Post = () => {
+  const { number } = useParams();
+  const [issuePost, setIssuePost] = useState<IssueProps>(initialState);
+  async function fetchIssue() {
+    const { data } = await api.get(
+      `/repos/JosephNovy/Github_Blog/issues/${number}`
+    );
+    setIssuePost(data);
+  }
+
+  const { html_url, title, created_at, comments, body, user } = issuePost;
+
+  useEffect(() => {
+    fetchIssue();
+  }, []);
   return (
     <Contanier>
       <Header />
@@ -31,51 +65,32 @@ export const Post = () => {
               <CaretLeft size={22} />
               <span>Voltar</span>
             </a>
-            <a href="/">
+            <a href={html_url} target="blank">
               <span>Ver no GITHUB</span>
               <ArrowSquareOut size={20} />
             </a>
           </LinksContanier>
           <Title>
-            <h2>JavaScript data types and data structures</h2>
+            <h2>{title}</h2>
           </Title>
           <Icons>
             <Icon>
               <GithubLogo size={22} color="#7C7C8A" />
-              <p>Há 1 dia</p>
+              <p>{dateFormatter.format(new Date(created_at))}</p>
             </Icon>
             <Icon>
               <Calendar size={22} color="#7C7C8A" />
-              <p>cameronwll</p>
+              <p>{user.login}</p>
             </Icon>
             <Icon>
               <Chats size={22} color="#7C7C8A" />
-              <p>5 comentários</p>
+              <p>{comments}comentários</p>
             </Icon>
           </Icons>
         </IssueContanier>
       </IssueHeader>
       <IssueContent>
-        <IssueText>
-          Programming languages all have built-in data structures, but these
-          often differ from one language to another. This article attempts to
-          list the built-in data structures available in JavaScript and what
-          properties they have. These can be used to build other data
-          structures. Wherever possible, comparisons with other languages are
-          drawn.
-          <br />
-          <br />
-          Dynamic typing <br />
-          JavaScript is a loosely typed and dynamic language. Variables in
-          JavaScript are not directly associated with any particular value type,
-          and any variable can be assigned (and re-assigned) values of all
-          types:
-        </IssueText>
-        <IssueCode>
-          let foo = 42; // foo is now a number <br />
-          foo = ‘bar’; // foo is now a string
-          <br /> foo = true; // foo is now a boolean
-        </IssueCode>
+        <IssueText>{body}</IssueText>
       </IssueContent>
     </Contanier>
   );

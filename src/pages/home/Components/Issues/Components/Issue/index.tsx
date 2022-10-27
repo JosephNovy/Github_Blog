@@ -1,16 +1,22 @@
 import React from "react";
 import { IssueContainer, Header, Title } from "./styles";
+import { dateFormatter } from "../../../../../../utils/formatter";
 
-export const Issue = () => {
-  const str =
-    "Programming languages all have built-in data structures, but these often differ from one language to another. This article attempts to list the built-in data structures available in JavaScript and what properties they have. These can be used to build other data structures. Wherever possible, comparisons with other languages are drawn.";
+interface IssueProps {
+  body: string;
+  url: string;
+  created_at: Date;
+  title: string;
+}
+
+export const Issue = ({ body, url, title, created_at }: IssueProps) => {
   return (
-    <IssueContainer>
+    <IssueContainer href={url}>
       <Header>
-        <Title>JavaScript data types and data structures</Title>
-        <span>Há 1 dia</span>
+        <Title>{title}</Title>
+        <span>{dateFormatter.format(new Date(created_at))}</span>
       </Header>
-      <p>{str.substring(0, 200)}</p>
+      <p>{body.substring(0, 200)}</p>
     </IssueContainer>
   );
 };
