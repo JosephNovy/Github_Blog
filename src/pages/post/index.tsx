@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { dateFormatter } from "../../utils/formatter";
 import {
@@ -22,6 +22,7 @@ import {
   IssueCode,
 } from "./styles";
 import { api } from "../../lib/Axios";
+import { UserGithubContext } from "../../contexts/userContext";
 
 interface IssueProps {
   html_url: string;
@@ -29,7 +30,7 @@ interface IssueProps {
   created_at: Date;
   comments: number;
   body: string;
-  user: string;
+  user: object;
 }
 const initialState = {
   html_url: "",
@@ -37,24 +38,27 @@ const initialState = {
   created_at: new Date(),
   comments: 0,
   body: "",
-  user: "",
+  user: {},
 };
 
 export const Post = () => {
   const { number } = useParams();
   const [issuePost, setIssuePost] = useState<IssueProps>(initialState);
+  const { userGithub } = useContext(UserGithubContext);
+
   async function fetchIssue() {
     const { data } = await api.get(
       `/repos/JosephNovy/Github_Blog/issues/${number}`
     );
     setIssuePost(data);
   }
-
-  const { html_url, title, created_at, comments, body, user } = issuePost;
+  const { login } = userGithub;
+  const { html_url, title, created_at, comments, body } = issuePost;
 
   useEffect(() => {
     fetchIssue();
   }, []);
+  console.log(issuePost);
   return (
     <Contanier>
       <Header />
@@ -76,11 +80,11 @@ export const Post = () => {
           <Icons>
             <Icon>
               <GithubLogo size={22} color="#7C7C8A" />
-              <p>{dateFormatter.format(new Date(created_at))}</p>
+              <p>{login}</p>
             </Icon>
             <Icon>
               <Calendar size={22} color="#7C7C8A" />
-              <p>{user.login}</p>
+              <p>{dateFormatter.format(new Date(created_at))}</p>
             </Icon>
             <Icon>
               <Chats size={22} color="#7C7C8A" />
