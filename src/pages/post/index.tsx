@@ -19,7 +19,6 @@ import {
   Icon,
   IssueContent,
   IssueText,
-  IssueCode,
 } from "./styles";
 import { api } from "../../lib/Axios";
 import { UserGithubContext } from "../../contexts/userContext";
@@ -58,7 +57,7 @@ export const Post = () => {
   useEffect(() => {
     fetchIssue();
   }, []);
-  console.log(issuePost);
+
   return (
     <Contanier>
       <Header />
@@ -88,7 +87,7 @@ export const Post = () => {
             </Icon>
             <Icon>
               <Chats size={22} color="#7C7C8A" />
-              <p>{comments}comentários</p>
+              <p>{comments} comentários</p>
             </Icon>
           </Icons>
         </IssueContanier>

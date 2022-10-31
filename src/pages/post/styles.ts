@@ -68,14 +68,8 @@ export const IssueContent = styled.article`
   display: grid;
   width: 865px;
   padding: 2rem;
+  margin-bottom: 4rem;
 `;
 export const IssueText = styled.p`
   text-align: justify;
-`;
-export const IssueCode = styled.div`
-  display: grid;
-  padding: 1rem;
-  background-color: ${(props) => props.theme["blue-500"]};
-  border-radius: 8px;
-  margin-top: 2rem;
 `;

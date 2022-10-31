@@ -7,6 +7,7 @@ export const Contanier = styled.section`
   align-items: center;
   justify-content: center;
   margin-top: 4rem;
+  margin-bottom: 4rem;
 `;
 
 export const SearchContanier = styled.div`
